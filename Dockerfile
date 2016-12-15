@@ -5,4 +5,4 @@ RUN a2enmod expires headers
 VOLUME /var/www/html
 COPY docker-entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["apache2", "-DFOREGROUND"]
+CMD ["service apache2 start", "-DFOREGROUND"]
