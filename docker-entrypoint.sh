@@ -83,6 +83,17 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 }
 
 EOPHP
+
+     #Eugene
+     dl_and_move_plugin() {
+         name="$1"
+         curl -O $(curl -i -s "https://wordpress.org/plugins/$name/" | egrep  -o "https://downloads.wordpress.org/plugin/[^']+")
+         unzip -o "$name".*.zip -d $(pwd)/wp-content/plugins
+     }
+
+     dl_and_move_plugin "wp-super-cache"
+     dl_and_move_plugin "wp-mail-smtp"
+
 		chown www-data:www-data wp-config.php
 	fi
 
@@ -171,7 +182,8 @@ $maxTries = 10;
 do {
 	$mysql = new mysqli($host, $argv[2], $argv[3], '', $port, $socket);
 	if ($mysql->connect_error) {
-		fwrite($stderr, "\n" . 'MySQL Connection Error: (' . $mysql->connect_errno . ') ' . $mysql->connect_error . "\n");
+		fwrite($stderr, "\n" . 'MySQ
+L Connection Error: (' . $mysql->connect_errno . ') ' . $mysql->connect_error . "\n");
 		--$maxTries;
 		if ($maxTries <= 0) {
 			exit(1);
@@ -187,6 +199,7 @@ if (!$mysql->query('CREATE DATABASE IF NOT EXISTS `' . $mysql->real_escape_strin
 }
 
 $mysql->close();
+
 EOPHP
 fi
 
