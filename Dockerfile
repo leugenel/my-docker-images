@@ -1,4 +1,5 @@
-FROM busybox:latest
+FROM gliderlabs/alpine:3.4
 MAINTAINER Eugene <leugenel@gmail.com>
-RUN mkdir /mysql_data && mkdir /www_data
+RUN apk add --no-cache nano
+ENV TERM=xterm
 VOLUME ["/var/lib/mysql", "/var/www/html"]
