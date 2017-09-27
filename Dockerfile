@@ -18,6 +18,6 @@ RUN apt-get update -qqy \
   && sed -i 's/securerandom\.source=file:\/dev\/random/securerandom\.source=file:\/dev\/urandom/' ./usr/lib/jvm/java-8-openjdk-amd64$
 
 COPY perf.jar /home/perf.jar
-COPY start.sh /home/start.sh
-RUN  ["chmod", "+x", "/home/start.sh"]
-CMD  /home/start.sh
+COPY start.sh /home/docker-entrypoint.sh
+RUN  ["chmod", "+x", "/home/docker-entrypoint.sh"]
+CMD  /home/docker-entrypoint.sh
