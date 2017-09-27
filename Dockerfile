@@ -1,8 +1,23 @@
-FROM wordpress:latest
-RUN apt-get update && apt-get install -y unzip && rm -r /var/lib/apt/lists/*
-RUN touch /usr/local/etc/php/conf.d/upload-limit.ini  && echo "upload_max_filesize = 32M" >> /usr/local/etc/php/conf.d/upload-limit.ini && echo "post_max_size = 32M" >> /usr/local/etc/php/conf.d/upload-limit.ini
-RUN a2enmod expires headers
-VOLUME /var/www/html
-COPY docker-entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["apache2-foreground"]
+FROM selenium/standalone-firefox-debug:2.53.0
+
+ENV DEBIAN_FRONTEND noninteractive
+
+#========================
+# Miscellaneous packages
+# Includes minimal runtime used for executing non GUI Java programs
+#========================
+RUN apt-get update -qqy \
+  && apt-get -qqy  install \
+    bzip2 \
+    ca-certificates \
+    openjdk-8-jre-headless \
+    sudo \
+    unzip \
+    wget \
+  && rm -rf /var/lib/apt/lists/* \
+  && sed -i 's/securerandom\.source=file:\/dev\/random/securerandom\.source=file:\/dev\/urandom/' ./usr/lib/jvm/java-8-openjdk-amd64$
+
+COPY perf.jar /home/perf.jar
+COPY start.sh /home/start.sh
+RUN  ["chmod", "+x", "/home/start.sh"]
+CMD  /home/start.sh
